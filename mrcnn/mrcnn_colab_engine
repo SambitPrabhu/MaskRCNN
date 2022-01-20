@@ -1,7 +1,5 @@
 import os
-ROOT_DIR = os.path.abspath("/content/calculate_object_area_exercise")
 # Import Mask RCNN
-sys.path.append(ROOT_DIR)  # To find local version of the library
 import numpy as np
 from skimage.measure import find_contours
 from mrcnn.config import Config
@@ -9,8 +7,6 @@ import mrcnn.model as modellib
 import colorsys
 import random
 import cv2
-
-
 
 
 class InferenceConfig(Config):
