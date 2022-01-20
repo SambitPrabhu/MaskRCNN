@@ -14,8 +14,6 @@ class InferenceConfig(Config):
     NUM_CLASSES = 5
     NAME = 'coco'
 
-config = InferenceConfig()
-
 def get_mask_contours(mask):
     #mask = masks[:, :, i]
     # Mask Polygon
