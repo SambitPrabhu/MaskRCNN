@@ -74,7 +74,7 @@ def detect_contours_maskrcnn(model, img):
         # 1. Class ID
         class_id = r["class_ids"][i]
         # 2. Boxes
-        box = result["rois"][i]
+        box = r["rois"][i]
         
         # 3. Mask
         mask = r["masks"][:, :, i]
