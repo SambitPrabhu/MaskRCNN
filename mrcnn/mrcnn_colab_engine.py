@@ -69,13 +69,17 @@ def detect_contours_maskrcnn(model, img):
     
     objects_ids = []
     objects_contours = []
+    bboxes = []
     for i in range(object_count):
         # 1. Class ID
         class_id = r["class_ids"][i]
+        # 2. Boxes
+        box = result["rois"][i]
         
         # 3. Mask
         mask = r["masks"][:, :, i]
         contours = get_mask_contours(mask)
+        bboxes.append(box)
         objects_contours.append(contours[0])
         objects_ids.append(class_id)
-    return objects_ids, objects_contours
+    return objects_ids, bboxes, objects_contours
