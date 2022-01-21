@@ -2,6 +2,11 @@ import os
 # Import Mask RCNN
 import numpy as np
 from skimage.measure import find_contours
+
+
+# Root directory of the project
+ROOT_DIR = os.path.abspath("/content/calculate_object_area_exercise")
+sys.path.append(ROOT_DIR)
 from mrcnn.config import Config
 import mrcnn.model as modellib
 import colorsys
