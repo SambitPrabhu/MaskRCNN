@@ -21,9 +21,10 @@ tf.compat.v1.logging.set_verbosity(tf.compat.v1.logging.ERROR)
 import tensorflow.keras as keras 
 import keras.backend as K
 import keras.layers as KL
-import keras.engine as KE
+#import keras.engine as KE
 import keras.models as KM
 from keras.layers import Layer
+from tensorflow.python.keras.saving import hdf5_format
 
 from mrcnn import utils
 
@@ -254,7 +255,7 @@ def clip_boxes_graph(boxes, window):
     return clipped
 
 
-class ProposalLayer(KE.Layer):
+class ProposalLayer(Layer):
     """Receives anchor scores and selects a subset to pass as proposals
     to the second stage. Filtering is done based on anchor scores and
     non-max suppression to remove overlaps. It also applies bounding
@@ -343,7 +344,7 @@ def log2_graph(x):
     return tf.log(x) / tf.log(2.0)
 
 
-class PyramidROIAlign(KE.Layer):
+class PyramidROIAlign(Layer):
     """Implements ROI Pooling on multiple levels of the feature pyramid.
 
     Params:
@@ -621,7 +622,7 @@ def detection_targets_graph(proposals, gt_class_ids, gt_boxes, gt_masks, config)
     return rois, roi_gt_class_ids, deltas, masks
 
 
-class DetectionTargetLayer(KE.Layer):
+class DetectionTargetLayer(Layer):
     """Subsamples proposals and generates target box refinement, class_ids,
     and masks for each.
 
@@ -781,7 +782,7 @@ def refine_detections_graph(rois, probs, deltas, window, config):
     return detections
 
 
-class DetectionLayer(KE.Layer):
+class DetectionLayer(Layer):
     """Takes classified proposal boxes and their bounding box deltas and
     returns the final detection boxes.
 
@@ -2103,11 +2104,11 @@ class MaskRCNN():
         import h5py
         # Conditional import to support versions of Keras before 2.2
         # TODO: remove in about 6 months (end of 2018)
-        try:
-            from keras.engine import saving
-        except ImportError:
-            # Keras before 2.2 used the 'topology' namespace.
-            from keras.engine import topology as saving
+        # try:
+        #     from keras.engine import saving
+        # except ImportError:
+        #     # Keras before 2.2 used the 'topology' namespace.
+        #     from keras.engine import topology as saving
 
         if exclude:
             by_name = True
@@ -2128,10 +2129,13 @@ class MaskRCNN():
         if exclude:
             layers = filter(lambda l: l.name not in exclude, layers)
 
-        if by_name:
-            saving.load_weights_from_hdf5_group_by_name(f, layers)
-        else:
-            saving.load_weights_from_hdf5_group(f, layers)
+        # if by_name:
+        #     saving.load_weights_from_hdf5_group_by_name(f, layers)
+        # else:
+        #     saving.load_weights_from_hdf5_group(f, layers)
+
+	keras_model.load_weights(filepath, by_name=by_name)
+
         if hasattr(f, 'close'):
             f.close()
 
