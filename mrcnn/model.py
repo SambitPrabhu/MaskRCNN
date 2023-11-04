@@ -2183,7 +2183,7 @@ class MaskRCNN():
                 tf.reduce_mean(layer.output, keepdims=True)
                 * self.config.LOSS_WEIGHTS.get(name, 1.))
             self.keras_model.add_loss(loss)
-	log("add L2 regularization")
+        log("add L2 regularization")
         # Add L2 Regularization
         # Skip gamma and beta weights of batch normalization layers.
         reg_losses = [
@@ -2191,8 +2191,7 @@ class MaskRCNN():
             for w in self.keras_model.trainable_weights
             if 'gamma' not in w.name and 'beta' not in w.name]
         self.keras_model.add_loss(tf.add_n(reg_losses))
-        
-	      log("starting compilation")
+        log("starting compilation")
         # Compile
         self.keras_model.compile(
             optimizer=optimizer,
