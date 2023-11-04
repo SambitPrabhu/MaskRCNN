@@ -2360,7 +2360,7 @@ class MaskRCNN():
         log("Checkpoint Path: {}".format(self.checkpoint_path))
         self.set_trainable(layers)
         self.compile(learning_rate, self.config.LEARNING_MOMENTUM)
-
+	log("model compiled")
         # Work-around for Windows: Keras fails on Windows when using
         # multiprocessing workers. See discussion here:
         # https://github.com/matterport/Mask_RCNN/issues/13#issuecomment-353124009
@@ -2368,7 +2368,7 @@ class MaskRCNN():
             workers = 0
         else:
             workers = multiprocessing.cpu_count()
-
+	log("starting training")
         self.keras_model.fit_generator(
             train_generator,
             initial_epoch=self.epoch,
@@ -2380,8 +2380,9 @@ class MaskRCNN():
             max_queue_size=100,
             workers=workers,
             use_multiprocessing=True,
-	    verbose=1
+	    verbose=2
         )
+	log("completed training")
         self.epoch = max(self.epoch, epochs)
 
     def mold_inputs(self, images):
